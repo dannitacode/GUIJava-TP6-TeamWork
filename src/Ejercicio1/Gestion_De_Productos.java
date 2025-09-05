@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * @author dannita
  */
 public class Gestion_De_Productos extends javax.swing.JFrame {
-    private ArrayList<String> electronica = new ArrayList<>();
-    private ArrayList<String> perfumeria = new ArrayList<>();
-    private ArrayList<String> textil = new ArrayList<>();
+    private ArrayList<Productos> electronica = new ArrayList<>();
+    private ArrayList<Productos> perfumeria = new ArrayList<>();
+    private ArrayList<Productos> textil = new ArrayList<>();
     
     
     /**
