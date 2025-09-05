@@ -21,6 +21,15 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
      */
     public Gestion_De_Productos() {
         initComponents();
+        cargarCategorias();
+    }
+    
+    public void cargarCategorias(){
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem("Selecciona categoria");
+        jComboBox1.addItem("Electronica");
+        jComboBox1.addItem("Perfumeria");
+        jComboBox1.addItem("Textil");
     }
 
     /**
@@ -68,15 +77,22 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
 
         jTabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nombre", "Categoria", "Precio"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTabla);
 
         jLtxtCategoria.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
