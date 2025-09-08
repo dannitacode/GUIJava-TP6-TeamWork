@@ -4,9 +4,8 @@
  */
 package Ejercicio1;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,16 +29,7 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
     public Gestion_De_Productos() {
         initComponents();
         armarCabecera();
-        cargarCategorias();
-        
-        jComboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                armarFilas();
-            }
-        });        
-        
+        cargarCategorias();  
     }
     
     public void cargarCategorias(){
@@ -68,7 +58,7 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonAgregarProducto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestion de productos");
@@ -124,11 +114,11 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona Categoria" }));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-carrito-de-compras-48.png"))); // NOI18N
-        jButton1.setText("Agregar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAgregarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8-carrito-de-compras-48.png"))); // NOI18N
+        jButtonAgregarProducto.setText("Agregar");
+        jButtonAgregarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonAgregarProductoActionPerformed(evt);
             }
         });
 
@@ -141,7 +131,7 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
         jDesktopPane1.setLayer(jComboBox1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jTextField1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jTextField2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jButtonAgregarProducto, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -170,7 +160,7 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonAgregarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
             .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jDesktopPane1Layout.createSequentialGroup()
@@ -191,7 +181,7 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLtxtNombre)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonAgregarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLtxtPrecio)
@@ -226,9 +216,43 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarProductoActionPerformed
+        String regex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+        if (jComboBox1.getSelectedIndex() == -1 || jComboBox1.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione una categoria antes de continuar.");
+            return;
+        }
+        try {
+        if (!jTextField1.getText().matches(regex)|| jTextField1.getText().isBlank()) {
+            JOptionPane.showMessageDialog(this, "Ingrese datos validos en el campo del nombre del producto antes de continuar.");
+            return;
+        }
+            String categoria = jComboBox1.getSelectedItem().toString();
+            Productos producto = new Productos(jTextField1.getText(), Integer.parseInt(jTextField2.getText()));
+
+            switch (categoria) {
+                case "Electronica":
+                    electronica.add(producto);
+                    JOptionPane.showMessageDialog(this, "Producto agregado.");
+                    break;
+                case "Perfumeria":
+                    perfumeria.add(producto);
+                    JOptionPane.showMessageDialog(this, "Producto agregado.");
+                    break;
+                case "Textil":
+                    textil.add(producto);
+                    JOptionPane.showMessageDialog(this, "Producto agregado.");
+                    break;
+            }
+            
+            armarFilas();
+            jTextField1.setText(null);
+            jTextField2.setText(null);
+            jComboBox1.setSelectedIndex(0);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Ingrese datos validos en el campo del precio del producto antes de continuar.");
+        }
+    }//GEN-LAST:event_jButtonAgregarProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,7 +291,7 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonAgregarProducto;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLtextTitulo;
@@ -308,6 +332,7 @@ private void armarFilas(){
           
             Object fila[]={
               aux.getNombre(),
+                categoriaselec,
               aux.getPrecio(),
               
         };
