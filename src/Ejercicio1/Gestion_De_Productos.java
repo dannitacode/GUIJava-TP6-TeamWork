@@ -4,13 +4,21 @@
  */
 package Ejercicio1;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author dannita
  */
 public class Gestion_De_Productos extends javax.swing.JFrame {
+    private DefaultTableModel modelo=new DefaultTableModel(){
+      public boolean isCellEditable(int row, int column){
+          return false;
+      }  
+    };
     private ArrayList<Productos> electronica = new ArrayList<>();
     private ArrayList<Productos> perfumeria = new ArrayList<>();
     private ArrayList<Productos> textil = new ArrayList<>();
@@ -21,7 +29,17 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
      */
     public Gestion_De_Productos() {
         initComponents();
+        armarCabecera();
         cargarCategorias();
+        
+        jComboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                armarFilas();
+            }
+        });        
+        
     }
     
     public void cargarCategorias(){
@@ -262,4 +280,42 @@ public class Gestion_De_Productos extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+private void armarCabecera(){
+    modelo.addColumn("Nombre");
+    modelo.addColumn("Categoria");
+    modelo.addColumn("precio");
+    jTabla.setModel(modelo);
+    }
+
+private void armarFilas(){
+  modelo.setRowCount(0);
+    
+  String categoriaselec=(String) jComboBox1.getSelectedItem();
+  ArrayList<Productos> listafiltro=null;
+  
+  if(categoriaselec!=null){
+      if(categoriaselec.equalsIgnoreCase("Electronica")){
+          listafiltro=electronica;
+      }else if(categoriaselec.equalsIgnoreCase("Perfumeria")){
+          listafiltro=perfumeria;
+      }else if(categoriaselec.equalsIgnoreCase("Textil")){
+          listafiltro=textil;
+      }
+  }
+  if(listafiltro!=null){
+      for(Productos aux : listafiltro){
+          
+            Object fila[]={
+              aux.getNombre(),
+              aux.getPrecio(),
+              
+        };
+       modelo.addRow(fila);
+      }
+  }
+    
+}
+
+
 }
